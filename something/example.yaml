@@ -1,0 +1,35 @@
+version: "1.0"
+mode: parallel
+success_criteria:
+  steps:
+    all:
+      - 
+
+steps:
+  step1:
+    title: "title"
+    image: "alpine:latest"
+    fail_fast: false
+    commands:
+      - "echo step1"
+      - exit 1
+
+  step2:
+    title: "title"
+    image: "alpine:latest"
+    commands:
+      - "echo hello world"
+    when:
+      condition:
+        all:
+          success: workflow.result == 'finished'
+
+  final: # will run in any case
+    title: "title"
+    image: "alpine:latest"
+    commands:
+      - "echo hello world"
+    when:
+      condition:
+        all:
+          success: workflow.result == 'failure'
