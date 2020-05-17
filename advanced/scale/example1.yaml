@@ -1,0 +1,14 @@
+version: '1.0'
+steps:
+  base:
+    image: alpine
+    scale:
+      step1:
+        commands:
+          - "echo step1"
+      step2:
+        commands:
+          - "echo step2"
+      step3:
+        commands:
+          - "echo step3"

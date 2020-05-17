@@ -1,0 +1,27 @@
+# run a step after internal step from scale finished - dosent work!!
+version: '1.0'
+mode: parallel
+steps:
+  base:
+    image: alpine
+    scale:
+      step1:
+        commands:
+          - "echo step1"
+          - sleep 20
+      step2:
+        commands:
+          - "echo step2"
+      step3:
+        commands:
+          - "echo step3"
+          - sleep 20
+  after:
+    image: alpine
+    commands:
+      - "echo after"
+    when:
+      steps:
+        - name: step2
+          on:
+            - success
