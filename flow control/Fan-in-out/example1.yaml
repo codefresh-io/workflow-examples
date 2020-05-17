@@ -1,0 +1,49 @@
+version: "1.0"
+mode: parallel
+steps:
+  step1:
+    title: "title"
+    image: "alpine:latest"
+    commands:
+      - "echo step1"
+      - exit 0
+
+  step2:
+    title: "title"
+    image: "alpine:latest"
+    commands:
+      - "echo step2"
+      - exit 0
+    when:
+      steps:
+        - name: step1
+          on:
+            - success
+  step3:
+    title: "title"
+    image: "alpine:latest"
+    commands:
+      - "echo step2"
+      - exit 0
+    when:
+      steps:
+        - name: step1
+          on:
+            - success
+  step4:
+    title: "title"
+    image: "alpine:latest"
+    commands:
+      - "echo step2"
+      - exit 0
+    when:
+      steps:
+        all:
+          - name: step2
+            on:
+              - success
+          - name: step3
+            on:
+              - success
+
+

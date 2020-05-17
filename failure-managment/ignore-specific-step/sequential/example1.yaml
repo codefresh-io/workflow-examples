@@ -1,0 +1,17 @@
+version: "1.0"
+steps:
+  step1:
+    title: "title"
+    image: "alpine:latest"
+    fail_fast: false
+    commands:
+      - "echo step1"
+      - exit 1
+
+  step2:
+    title: "title"
+    image: "alpine:latest"
+    commands:
+      - "echo step2"
+      - exit 0
+

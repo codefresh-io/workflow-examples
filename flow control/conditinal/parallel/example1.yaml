@@ -1,26 +1,35 @@
+# step 3 will not run
 version: "1.0"
 mode: parallel
 steps:
-
   step1:
     title: "title"
     image: "alpine:latest"
     commands:
       - "echo step1"
+      - exit 0
 
   step2:
     title: "title"
     image: "alpine:latest"
     commands:
       - "echo step2"
+      - exit 0
+    when:
+      steps:
+        - name: step1
+          on:
+            - success
 
-  final:
+  step3:
     title: "title"
     image: "alpine:latest"
     commands:
-      - "echo hello world"
+      - "echo step2"
+      - exit 0
     when:
-      condition:
-        any:
-          success: workflow.result == 'success'
-          failure: workflow.result == 'failure'
+      steps:
+        - name: step1
+          on:
+            - failure
+

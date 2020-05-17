@@ -1,0 +1,53 @@
+# define post workflow as group of steps
+version: "1.0"
+mode: parallel
+steps:
+  step1:
+    title: "title"
+    image: "alpine:latest"
+    commands:
+      - "echo step1"
+
+  step2:
+    title: "title"
+    fail_fast: false
+    image: "alpine:latest"
+    commands:
+      - "echo step2"
+      - exit 1
+
+  final:
+    title: "title"
+    image: "alpine:latest"
+    commands:
+      - "echo hello world"
+    when:
+      condition:
+        any:
+          success: workflow.result == 'success'
+          failure: workflow.result == 'failure'
+  final2:
+    title: "title"
+    image: "alpine:latest"
+    commands:
+      - "echo hello world"
+    when:
+      condition:
+        any:
+          success: workflow.result == 'success'
+          failure: workflow.result == 'failure'
+
+  final3:
+    title: "title"
+    image: "alpine:latest"
+    commands:
+      - "echo hello world"
+      - exit 1
+    when:
+      steps:
+        - name: final
+          on:
+            - finished
+        - name: final2
+          on:
+            - finished

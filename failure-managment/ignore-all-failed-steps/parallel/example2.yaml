@@ -1,0 +1,18 @@
+version: "1.0"
+mode: parallel
+steps:
+  step1:
+    title: "title"
+    image: "alpine:latest"
+    fail_fast: false
+    commands:
+      - "echo step1"
+      - exit 1
+
+  step2:
+    title: "title"
+    image: "alpine:latest"
+    fail_fast: false
+    commands:
+      - "echo step2"
+      - exit 1

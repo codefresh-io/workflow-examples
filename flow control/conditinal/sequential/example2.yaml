@@ -1,0 +1,35 @@
+# step 2 will be skipped, fail_fast was set to step 1
+version: "1.0"
+steps:
+  step1:
+    title: "title"
+    fail_fast: false
+    image: "alpine:latest"
+    commands:
+      - "echo step1"
+      - exit 1
+
+  step2:
+    title: "title"
+    image: "alpine:latest"
+    commands:
+      - "echo step2"
+      - exit 0
+    when:
+      steps:
+        - name: step1
+          on:
+            - success
+
+  step3:
+    title: "title"
+    image: "alpine:latest"
+    commands:
+      - "echo step2"
+      - exit 0
+    when:
+      steps:
+        - name: step1
+          on:
+            - failure
+
