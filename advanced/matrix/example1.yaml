@@ -1,0 +1,73 @@
+version: '1.0'
+steps:
+  run_my_tests_before_build:
+    matrix:
+      commands:
+        - echo "hello world"
+        - echo "hello world again"
+      image:
+        - golang:1.11
+        - golang:1.12
+        - golang:1.13
+
+
+
+.include lala2
+
+
+mode: parallel
+flow:
+  lala1:
+    type: step
+  lala2:
+    type: stage
+    mode: parallel
+    flow:
+      lala2-1:
+        type: step
+      lala2-2:
+        type: step
+  lala3:
+      type: stage
+      flow:
+        lala3:
+          type: stage
+          lala3-1:
+            type: step
+          lala3-2:
+            type: step
+
+
+stages:
+  - build:
+      mode: parallel
+      fail_fast: false
+      ..
+  - test:
+      mode: parallel
+      fail_fast: false
+      ..
+  - deploy:
+      mode: seq
+      fail_fast: true
+      ..
+  - deploy:
+      mode: seq
+      fail_fast: true
+      ..
+
+
+mode: parallel
+steps:
+  build1:
+    stage: build
+    ..
+  test1:
+    stage: test
+    ..
+  build2:
+    stage: build
+    ..
+
+
+

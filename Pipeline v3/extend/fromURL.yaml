@@ -1,0 +1,16 @@
+version: "1.0"
+extends:
+    location: url
+    url: ${{my-url}}
+steps:
+  step1:
+    title: "title"
+    image: "alpine:latest"
+    commands:
+      - "echo step1"
+
+  step2:
+    title: "title"
+    image: "alpine:latest"
+    commands:
+      - "echo step2"

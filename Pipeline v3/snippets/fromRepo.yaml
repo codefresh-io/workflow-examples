@@ -1,0 +1,16 @@
+version: "1.0"
+steps:
+
+  snippet.build:
+  includes: 'https://company.com/autodevops-template.yml'
+    location: "../"
+    title: "title"
+    image: "alpine:latest"
+    commands:
+      - "echo step1"
+
+  step2:
+    title: "title"
+    image: "alpine:latest"
+    commands:
+      - "echo step2"

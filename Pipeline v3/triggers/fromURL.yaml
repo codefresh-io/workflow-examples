@@ -1,0 +1,25 @@
+version: '1.0'
+kind: pipeline
+spec:
+  triggers:
+    - name: trigger1
+      type: git
+      repo: ${{trigger-rpo}}
+      pullRequestAllowForkEvents: false
+      commentRegex: /.*/gi
+      branchRegex: /^((?!master).)*$/gi
+      branchRegexInput: regex
+      provider: github
+      disabled: false
+      verified: true
+      context: cf_github
+      contexts: []
+      variables: []
+      lastExecutionDate: '2020-05-20T14:02:53.945Z'
+      id: 5cbd8d61adb59cff1bb07ea8
+      endpoint: 'https://g.codefresh.io/api/providers/github/hook/xTXnZVToi6'
+      secret: tm6deiS1KR9FgUIs
+      extends:
+        location: url
+        url: ${{my-url}}
+
