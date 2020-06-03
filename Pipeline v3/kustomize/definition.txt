@@ -1,0 +1,99 @@
+Kustomzie features:
+1. define high some high level roles to be appplied for all the steps - also implementd in gitlab
+
+steps:
+    step1:
+      title: step1
+      commands:
+        echo "hello world"
+    step2:
+      title: step2
+      commands:
+        echo "hello world"
+
+----------------------------
+- image:alpine
+----------------------------
+step1:
+  title: step1
+  image: alpine
+  commands:
+    echo "hello world"
+step2:
+  title: step2
+  image: alpine
+  commands:
+    echo "hello world"
+
+2. auto generator  - ( i dont think it will be fit for out use case)
+kustomize provide some generators for different resources types. such as config map, services, deployments etc.
+in our use case we have basiclly one type - codefresh.yaml which represent the workflow itself
+
+3. base yaml
+kustomize support in base terminology
+----
+bases:
+ ${{path to the base yaml file}}
+ 1. ../base.yaml
+ 2. https://github.com/codefresh-io/workflow-examples/base.yaml?ref=v1.0.0
+
+we can patch the base yaml by specify
+
+example:
+
+base.yaml:
+
+version: 1.0
+steps:
+    step1:
+      title: step1
+      image: alpine
+      commands:
+        echo "hello world"
+    step2:
+      title: step2
+      image: alpine
+      commands:
+        echo "hello world2"
+--------------------------------------------
+patch.yaml:
+
+base:
+ ../base.yaml
+step2:
+  title: patch-step-2
+
+--------------------------------------------
+result:
+
+version: 1.0
+steps:
+    step1:
+      title: step1
+      image: alpine
+      commands:
+        echo "hello world"
+    step2:
+      title: patch-step-2
+      image: alpine
+      commands:
+        echo "hello world2"
+
+
+#####
+IMPORTANT:
+the concept in kustomize its a bit different from what we had in out mind.
+all the chnages to be applied specified in kustomize.yaml file:
+
+kustomize.yaml:
+
+bases:
+- ../../base
+patchesStrategicMerge:
+- localserv.yaml
+
+
+and to get the final yaml they applied => kustomize build $DEV_HOME
+
+in my opinion we should do the same, but we will "Run" the kustomize behind the scene
+more over i dont see any justification for using patchesStrategic concept. we can do it by conventions without to specify it directly

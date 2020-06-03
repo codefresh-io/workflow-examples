@@ -1,0 +1,40 @@
+version: "1.0"
+stages:
+  - pre
+  - flow
+  - post
+steps:
+  pre1:
+    image: "alpine:latest"
+    stage: pre
+    commands:
+      - "echo pre step 1"
+  pre2:
+    image: "alpine:latest"
+    stage: pre
+    commands:
+      - "echo pre step 2"
+  step1:
+    title: "title"
+    stage: flow
+    image: "alpine:latest"
+    commands:
+      - "echo step1"
+
+  step2:
+    title: "title"
+    stage: flow
+    image: "alpine:latest"
+    commands:
+      - "echo step2"
+
+  post1:
+    image: "alpine:latest"
+    stage: post
+    commands:
+      - "echo post step 1"
+  post2:
+    image: "alpine:latest"
+    stage: post
+    commands:
+      - "echo post step 2"

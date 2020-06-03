@@ -1,0 +1,32 @@
+version: "1.0"
+default:
+  - type: "build:V1"
+    arguments:
+      buildKit: true
+      fail_fast: true
+  - type: "clone:V2"
+      arguments:
+        fail_fast: false
+  - type: "build"
+    arguments:
+      buildKit: true
+      fail_fast: true
+  - arguments:
+      image: alpine:latest
+steps:
+  step1:
+    type: "build:v1"
+    title: "title"
+    commands:
+      - "echo step1"
+
+  step2:
+    title: "title"
+    commands:
+      - "echo step2"
+
+  step3:
+    title: "title"
+    image: node
+    commands:
+      - "echo step2"

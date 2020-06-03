@@ -1,0 +1,22 @@
+version: "1.0"
+extends:
+    location: git # we will use it also for gitops. just specify roles for valid templates repos
+    context: ${{my-git}}
+    repo: ${{my-repo}}
+    path: ${{my-path}}
+    revision: ${{my-revision}}
+steps:
+  ${{build}}
+  ${{test}}
+  ${{deploy}}
+  report:
+    title: "title"
+    image: "alpine:latest"
+    commands:
+      - "echo step1"
+
+  step2:
+    title: "title"
+    image: "alpine:latest"
+    commands:
+      - "echo step2"
