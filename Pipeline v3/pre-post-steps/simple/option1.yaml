@@ -1,0 +1,26 @@
+version: "1.0"
+mode: sequential
+on_begin:
+  image: alpine
+    commands:
+      - "echo on_begin"
+on_finish:
+  image: alpine
+    commands:
+      - "echo on_finish"
+stages:
+  - name: flow
+    mode: parallel
+    steps:
+      step1:
+        image: "alpine:latest"
+        commands:
+          - "echo step 1"
+      step2:
+        image: "alpine:latest"
+        commands:
+          - "echo step 2"
+    on_begin:
+       image: alpine
+        commands:
+          - "echo post step 1"
