@@ -1,0 +1,85 @@
+version: "1.0"
+mode: sequential
+on_begin:
+  mode: parallel
+  steps:
+    pre-workflow1:
+      image: alpine
+        commands:
+          - "echo pre-workflow step 1"
+    pre-workflow2:
+      image: alpine
+        commands:
+          - "echo pre-workflow step 2"
+on_finish:
+  metadata:
+    set:
+      - ${{build_step.imageId}}:
+          - unit_tests: passed
+  steps:
+    post-workflow1:
+      image: alpine
+      commands:
+        - "echo post-workflow1 step 1"
+stages:
+  - name: pre
+    steps:
+      pre-step1:
+        image: "alpine:latest"
+        commands:
+          - "echo pre-step1 1"
+  - name: flow
+    mode: parallel
+    steps:
+      step1:
+        image: "alpine:latest"
+        commands:
+          - "echo step 1"
+        on_begin:
+          image: alpine
+          commands:
+            - "echo pre step 1"
+        on_finish:
+          image: alpine
+          commands:
+            - "echo post step 1"
+      step2:
+        image: "alpine:latest"
+        commands:
+          - "echo step 2"
+        on_begin:
+          image: alpine
+          commands:
+            - "echo pre step2"
+    on_begin:
+      mode: parallel
+      steps:
+        pre-flow-1:
+          image: alpine
+            commands:
+              - "echo post step 1"
+        pre-flow-2:
+          image: alpine
+            commands:
+              - "echo post step 2"
+    on_finish:
+      metadata:
+        set:
+          - ${{build_step.imageId}}:
+              - unit_tests: passed
+      steps:
+        post-flow-1:
+          image: alpine
+          commands:
+            - "echo post step 1"
+      - name: post
+        steps:
+          post-step-1:
+            image: "alpine:latest"
+            commands:
+              - "echo post 1"
+          post-step-2:
+            image: "alpine:latest"
+            stage: post
+            commands:
+              - "echo post step 2"

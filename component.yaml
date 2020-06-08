@@ -1,0 +1,80 @@
+version: '1.0'
+kind: component
+metadata:
+  name: component1
+  project:
+    - project1
+    - project2
+  revision: 1
+  accountId: 5672d8deb6724b6e359adf62
+  created_at: '2020-06-04T07:53:36.572Z'
+  updated_at: '2020-06-04T07:53:37.479Z'
+spec:
+  source:
+    name: runtime-environment-manager
+    type: git
+    repo: codefresh-io/runtime-environment-manager
+    provider: github
+    context: cf_github
+  trigger:
+    contexts: []
+    variables: []
+
+  ---------------------------------
+
+
+version: '1.0'
+kind: pipeline
+metadata:
+  name: pip1
+  revision: 1
+  accountId: 5672d8deb6724b6e359adf62
+  created_at: '2020-06-04T07:53:36.572Z'
+  updated_at: '2020-06-04T07:53:37.479Z'
+spec:
+  triggers_definition:
+    - type: git
+      name: heads
+      events:
+        - push.heads
+      pullRequestAllowForkEvents: false
+      commentRegex: /.*/gi
+      branchRegex: /^((?!master).)*$/gi
+      branchRegexInput: regex
+      disabled: false
+      verified: true
+      contexts: []
+      variables: []
+    - type: git
+      name: pr_close
+      events:
+        - pr.closed
+      pullRequestAllowForkEvents: false
+      commentRegex: /.*/gi
+      branchRegex: /^((?!master).)*$/gi
+      branchRegexInput: regex
+      disabled: false
+      verified: true
+      contexts: []
+      variables: []
+  triggers:
+    - component: runtime-environment-manager
+      type: git
+      definition: heads
+      branchRegex: /^((?!staging).)*$/gi
+    - component: runtime-environment-manager
+      type: git
+      definition: pr_close
+
+
+  ----------------------------------------
+
+projectName: Deployment
+type: release-lifecycle
+tags:
+  - production
+variables:
+  - key: AWS
+    value: '*****'
+updatedAt: '2019-04-19T09:46:13.793Z'
+

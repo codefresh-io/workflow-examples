@@ -1,32 +1,71 @@
 version: "1.0"
+  internal_phases:
+    - pre:
+        name: pre
+        mode: parallel
+        fail_fast: false
+    - during:
+        name: during
+        mode: parallel
+        fail_fast: false
+    - post:
+        name: post
+        mode: seq
 stages:
-  - pre
-  - flow
-  - post
+  pre:
+    - name: pre-stage
+      phase: pre
+      internal_phases:
+        - pre:
+            name: pre
+            mode: parallel
+            fail_fast: false
+        - during:
+            name: during
+            mode: parallel
+            fail_fast: false
+        - post:
+            name: post
+            mode: seq
+  - flow:
+      name: flow-stage
+  - post:
+     - name: post-stage
+       phase: post
 steps:
+
   pre1:
     image: "alpine:latest"
-    stage: pre
+    stage: flow
+    phase: pre
     commands:
       - "echo pre step 1"
+
   pre2:
     image: "alpine:latest"
-    stage: pre
+    stage: flow
+    phase: pre
+    depends: pre
     commands:
-      - "echo pre step 2"
-  step1:
+      - "echo pre step 1"
+  flow1:
     title: "title"
     stage: flow
     image: "alpine:latest"
     commands:
       - "echo step1"
 
-  step2:
+  flow2:
     title: "title"
     stage: flow
     image: "alpine:latest"
     commands:
       - "echo step2"
+    on:
+      finish:
+        stage: flow2
+      start:
+        stage: flow3
 
   post1:
     image: "alpine:latest"
